@@ -16,9 +16,6 @@ class Track extends React.Component{
         this.props.onRemove(this.props.track)
     }
 
-    
-
-
     renderAction() {
         if (this.props.isRemoval) {
             return <button onClick={this.removeTrack}className='Track-action'>-</button>
