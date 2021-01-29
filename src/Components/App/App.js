@@ -9,15 +9,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [{name: 'name1', artist: 'artist1', album: 'album1', id: 1 }, {name: 'name2', artist: 'artist2', album: 'album2', id: 2 } ],
-      playlistName: 'playlistName1',
-      playlistTracks: [{name: 'playlistName1', artist: 'playlistArtist1', album: 'playlistAlbum1', id: 3}]}
+      searchResults: [],
+      playlistName: 'My Playlist',
+      playlistTracks: []
+    }
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
   }
+
 
   search(term) {
     Spotify.search(term).then(searchResults => {
@@ -26,7 +28,13 @@ class App extends React.Component {
   }
 
   savePlaylist() {
-    let trackURIs = this.state.playlistTracks.map(track => track.uri);
+    let trackUris = this.state.playlistTracks.map(track => track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackUris).then(() => {
+      this.setState({
+        playlistName: 'New Playlist',
+        playlistTracks: []
+      })
+    })
   }
 
   addTrack(track) {
@@ -51,6 +59,8 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.searchResults)
+    console.log(this.state.playlistName)
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
